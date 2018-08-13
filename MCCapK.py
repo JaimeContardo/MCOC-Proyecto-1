@@ -9,7 +9,7 @@ masa = []
 largos = [12.*3.5,12.*3.5,12.*3.5,12.*3.5,8.*3.5,8.*3.5,8.*3.5,8.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5]
 i = 0 
 while i<20:
-    masa.append(6.2*largos[i])
+    masa.append(6.2*largos[i]*1000)
     i+=1
 M =  np.transpose(masa)*np.identity(20)
 #print masa #Vector de masas
@@ -40,7 +40,6 @@ k_pisos[16:20] = np.sum((columnas*pisos[4]))
 
 k_pisos[0]/= (largos[0]**3)
 k_pisos[1:]/=(largos[1]**3)
-k_pisos[:]/=1000.
 
 kmatrix = np.zeros((20,20)) 
 #print k_pisos #Vector de rigidez por piso
