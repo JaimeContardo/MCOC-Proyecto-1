@@ -4,7 +4,7 @@ import scipy as sp
 
 # 
 # 
-# 
+# Parte Jaime Conrtardo y Jose Toledo
 masa = []
 largos = [12.*3.5,12.*3.5,12.*3.5,12.*3.5,8.*3.5,8.*3.5,8.*3.5,8.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5]
 i = 0 
@@ -18,7 +18,7 @@ print M #matriz de masa
 
 # 
 # 
-# 
+#Parte Jose Toledo y Jorge Salas 
 
 columnas = []
 medidas= array([600.,700.,800.,900.,1000.])
@@ -57,7 +57,7 @@ print kmatrix
 
 # 
 # 
-# 
+# Parte Jose toledo
 
 f1 = 0.2 
 f2 = 2.
@@ -70,7 +70,7 @@ print c
 
 # 
 # 
-# 
+# Parte Felipe Elgueta
 
 caps= array([150.,250.,500.,800.]) #kN, capacidades disponibles
 c_por_piso=np.array([caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],
