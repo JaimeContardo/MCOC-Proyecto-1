@@ -9,7 +9,7 @@ masa = []
 largos = [12.*3.5,12.*3.5,12.*3.5,12.*3.5,8.*3.5,8.*3.5,8.*3.5,8.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5]
 i = 0 
 while i<20:
-    masa.append(6.2*largos[i]*1000.)
+    masa.append(6.2*largos[i])
     i+=1
 M =  np.transpose(masa)*np.identity(20)
 #print masa #Vector de masas
@@ -40,7 +40,7 @@ k_pisos[16:20] = np.sum((columnas*pisos[4]))
 
 k_pisos[0]/= (largos[0]**3)
 k_pisos[1:]/=(largos[1]**3)
-
+k_pisos[:]/=1000.
 
 kmatrix = np.zeros((20,20)) 
 #print k_pisos #Vector de rigidez por piso
@@ -61,7 +61,7 @@ print kmatrix
 
 f1 = 0.2 
 f2 = 2.
-xi = 0.025
+xi = 0.02
 a0 = (4*np.pi*f1*f2*(f1-f2)*xi)/(f1**2-f2**2)
 a1 = xi*(f1-f2)/(np.pi*(f1**2-f2**2))
 c= a0*M+a1*kmatrix
@@ -76,9 +76,9 @@ caps= array([150.,250.,500.,800.]) #kN, capacidades disponibles
 c_por_piso=np.zeros(20)
 c_por_piso=np.array([caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],
                      caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0]]) #cantidad de disipadores y que tipo por piso
-c_por_piso*=1000. #a N
+c_por_piso*=1000 #a N
 
-print "Capacidad total instalada: " + str(np.sum(c_por_piso))+" N"
+print "Capacidad total instalada: " + str(np.sum(c_por_piso))+" Kn"
 print c_por_piso #
 
 # 
