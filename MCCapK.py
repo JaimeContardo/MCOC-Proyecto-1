@@ -61,7 +61,7 @@ print kmatrix
 
 f1 = 0.2 
 f2 = 2.
-xi = 0.025
+xi = 0.02
 a0 = (4*np.pi*f1*f2*(f1-f2)*xi)/(f1**2-f2**2)
 a1 = xi*(f1-f2)/(np.pi*(f1**2-f2**2))
 c= a0*M+a1*kmatrix
@@ -73,8 +73,10 @@ print c
 # 
 
 caps= array([150.,250.,500.,800.]) #kN, capacidades disponibles
+c_por_piso=np.zeros(20)
 c_por_piso=np.array([caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],
                      caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0]]) #cantidad de disipadores y que tipo por piso
+c_por_piso*=1000 #a N
 
 print "Capacidad total instalada: " + str(np.sum(c_por_piso))+" Kn"
 print c_por_piso #
