@@ -4,7 +4,7 @@ import scipy as sp
 
 # 
 # 
-# Codigo Jaime Contardo y Jose Toledo
+# 
 masa = []
 largos = [12.*3.5,12.*3.5,12.*3.5,12.*3.5,8.*3.5,8.*3.5,8.*3.5,8.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5,4.*3.5]
 i = 0 
@@ -18,15 +18,15 @@ print M #matriz de masa
 
 # 
 # 
-# Codigo Jorge Salas y Jose Toledo
+# 
 
 columnas = []
 medidas= array([600.,700.,800.,900.,1000.])
 largos = [4000.,2800.]
-youngmod = 23.5
+youngmod = 23.5 #KN/mm2
 c = 0
 while c<5:
-    columnas.append(12*youngmod*(medidas[c])**4/12)
+    columnas.append(12.*youngmod*(medidas[c])**4/12.) #KN/mm
     c+=1
 columnas = array(columnas)
 pisos = array([[6.,2.,0.,1.,4.],[4.,0.,1.,0.,4.],[0.,0.,1.,4.,0.],[0.,1.,4.,0.,0.],[5.,0.,0.,0.,0.]])
@@ -52,30 +52,31 @@ while i < 19:
     kmatrix[i+1][i] = -k_pisos[i+1] 
     i += 1
 kmatrix[19][19] = k_pisos[19]
-
+kmatrix*=10**6 #N/M
 print kmatrix
 
 # 
 # 
-# Codigo Jose Toledo
+# 
 
 f1 = 0.2 
 f2 = 2.
-xi = 0.02
+xi = 0.025
 a0 = (4*np.pi*f1*f2*(f1-f2)*xi)/(f1**2-f2**2)
 a1 = xi*(f1-f2)/(np.pi*(f1**2-f2**2))
 c= a0*M+a1*kmatrix
+
 
 print c
 
 # 
 # 
-# Codigo Felipe Elgueta
+# 
 
 caps= array([150.,250.,500.,800.]) #kN, capacidades disponibles
 c_por_piso=np.zeros(20)
-c_por_piso=np.array([caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],
-                     caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0]]) #cantidad de disipadores y que tipo por piso
+c_por_piso=np.array([caps[2],caps[2],caps[2],caps[2],caps[2],caps[1],caps[0],caps[0],caps[0],caps[0],
+                     caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0]])#cantidad de disipadores y que tipo por piso
 c_por_piso*=1000 #a N
 
 print "Capacidad total instalada: " + str(np.sum(c_por_piso))+" N"
