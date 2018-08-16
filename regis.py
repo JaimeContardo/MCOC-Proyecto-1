@@ -29,7 +29,7 @@ def interpol(ruta,graficar=False):
 
 	amax=max(abs(a))
 
-	return i,amax
+	return i,amax,dt*n
 
 
 

@@ -8,12 +8,12 @@
 # Ejemplo 1  
 # Lenguaje Python 2.7
 #
-# En este ejemplo se demuestra como escribir un integrador de ecuaciones diferenciales
-# de segundo orden, usando el concepto de espacio de estado y el metodo de Euler. Se compara
+# En este programa se resuelve la ecuacion de movimiento del edficio indicado, utilizando un integrador de ecuaciones diferenciales
+# de segundo orden, usando el concepto de espacio de estado y el metodo de Euler, asi como un integrados RungeKutta de 4to orden. Se compara
 # la solucion del metodo de Euler con el integrador RK45 de Scipy, via la interfaz solve_ivp.
 #
-# Se aplica el integrador a resolver la respuesta de un oscilador de 1 GDL a una condicion 
-# inicial (sin forzamiento) considerando amortiguamiento lineal y un modelo de 
+# Se aplica el integrador a resolver la respuesta de un oscilador de 20 GDL sometido a una aceleracion proveniente de un registro sismico 
+# considerando amortiguamiento lineal y un modelo de 
 # amortiguamiento friccional. 
 # =======================================================================================
 
@@ -22,32 +22,24 @@ import scipy as sp
 import numpy as np
 
 import matplotlib.pyplot as plt
-# import scipy.integrate
 from scipy.integrate import solve_ivp
-
 from regis import *
 
 
 
 datos=sp.load('mck.npz')
-#Parametros
+#Matrices relevantes al caso
 
-M= np.matrix(datos['Mmatriz'])      # [kg]  Masa del oscilador
-K=np.matrix(datos['Kmatriz'])        # [N/m] Rigidez del oscilador       # [N]   Capacidad maxima friccional del disipador
-CAP=datos['CAPvector']
-C=sp.matrix(datos['Cmatriz'])
-# C=np.zeros((20,20))
+M= np.matrix(datos['Mmatriz'])      # [kg]  Matriz de masa del edifico
+K=np.matrix(datos['Kmatriz'])        # [N/m] Rigidez del edficio     
+C=sp.matrix(datos['Cmatriz'])       # Matriz de amortiguacion     
+CAP=datos['CAPvector']              # [N]   Capacidad maxima friccional del sistema de dispacion, por piso
 
+Mi=M.I #Inversa de la matriz de masa
 
-vr = 0.0001     # [m/s] Velocidad de referencia para la aproximacion de la friccion via tanh. 
-d0 = 10         # [m]   Condicion inicial de desplazamiento
-v0 = 0          # [m/s] Condicion inicial de velocidad
-dt = 0.001       # [s]   Paso de integracion a usar
-tmax = 600  # [s]   Tiempo maximo de integracion 
 
 
 #Definimos la matriz de estado A
-Mi=M.I
 A = np.block(
     [
     [np.zeros((20,20)),np.eye(20)],
@@ -55,7 +47,15 @@ A = np.block(
     ]
     )
 
-inte=interpol('/home/felipe/Desktop/MCOC-Proyecto-1/20180702-092950-PB15-HLE.txt')[0]
+#Aqui se define el registro sismico a utilizar, mediante un interpolador cubico
+ruta='/home/felipe/Desktop/MCOC-Proyecto-1/20140401-234645-AP01-HNE.txt'
+interpolador=interpol(ruta)
+inte=interpolador[0]
+
+vr = 0.001     # [m/s] Velocidad de referencia para la aproximacion de la friccion via tanh. 
+dt = 0.001       # [s]   Paso de integracion a usar en metodo de Euler
+
+tmax = interpolador[2]*1.1 # [s]   Tiempo maximo de integracion, 10% mas que la duracion del evento sismico 
 
 #Definimos la funcion del lado derecho de la EDO de primer orden
 #a resolver zp = fun(t,z).  zp es la derivada temporal de z.
@@ -65,57 +65,34 @@ def fun(t,z):
         print "  {} at t = {}".format(fun.solver, fun.tnextreport)
         fun.tnextreport += 1
 
-    #------- Lo que sigue es lo que importa
-    if fun.solver=="RK45":
+    if fun.solver!="Euler":
         z=np.squeeze(z)
-
     Famort = sp.zeros(40)   #vector de fuerza friccional de amortiguamiento
-    
-    # tangh=sp.zeros(20)
-    Famort[0]=- (
-        CAP[0] * (1./M[0,0]) * sp.tanh( (z[20]/vr) )
-        )
+    Famort[0]=- (CAP[0] * (1./M[0,0]) * sp.tanh( (z[20]/vr) ))
 
-    # tangh[0]=-Mi[0,0]*CAP[0]*sp.tanh(z[20]/vr)
     for i in range(1,20):
         Famort[i]=-(1./M[i,i])*CAP[i]*sp.tanh((z[i+20]-z[i-1+20])/vr)
 
     Ft=sp.zeros(40)
     if t<226.81:
-        Ft[20:]=inte(t)
-    # Famort[20:]=tangh
+        Ft[20:]=inte(t)/9.8
 
-    # Pueba
-    # print t
-    # Famort[20:]=-sp.matmul(Mi,tangh)
-    # Prueba
-
-    # CT=CAP*tangh
-    # CT=np.matrix(CT).T
-
-    # new=(Mi*CT).T
-    # Famort[20:]= -new
-    # Famort=np.matrix(Famort)
-    
-    # print sp.matmul(A,z)+Famort
-
-    # q=raw_input()
-    # return np.squeeze(np.asarray(sp.matmul(A,z) + Famort)) #+ funcion de fuerzas de t
     return sp.matmul(A,z)+Famort+Ft
+
 #Vector de tiempo y su largo (Nt)
-t = sp.arange(0, tmax, dt)
+t = sp.arange(0, tmax, dt,dtype=sp.float64)
 Nt = len(t)
 
 
 
-#Inicializar una matriz z para guardar las solucion discretizada
-z_euler = sp.zeros((40,Nt+1))
-z_RK45 = sp.zeros((40,Nt+1))
+#Inicializar una matriz z para guardar las soluciones discretizadas
+z_euler = sp.zeros((40,Nt+1),dtype=sp.float64)
+z_RK45 = sp.zeros((40,Nt+1),dtype=sp.float64)
 
 #Condicion inciial en t = 0, i = 0. 
 z0 = sp.array([
                 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                v0,v0, v0,v0, v0,v0, v0,v0, v0,v0, v0,v0, v0,v0, v0,v0, v0,v0, v0,v0
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             ])
 
 
@@ -139,9 +116,8 @@ while (ti < tmax):
 print "Integrando con RK45"
 fun.tnextreport = 0
 fun.solver = "RK45"
-solucion_rk45 = solve_ivp(fun, [0., tmax], z0, method='RK45', t_eval=t, vectorized=False )
-z_RK45[:,1:] = solucion_rk45.y
-# z_RK45=z_euler  
+solucion_rk45 = solve_ivp(fun, [0., tmax], z0, method=fun.solver, t_eval=t, vectorized=False )
+z_RK45[:,1:] = solucion_rk45.y 
 
 
 
@@ -157,7 +133,7 @@ for z, lab in zip([z_euler, z_RK45], ["Euler", "RK45"]):
     u = z[19,:-1]
     v = z[39,:-1]
     dmax=max(abs(u))
-    plt.subplot(2,1,1)
+    plt.subplot(3,1,1)
     plt.plot(t, u, label=lab)
     plt.ylim([-1.5*dmax, 1.5*dmax])
     plt.xlim([0, tmax])
@@ -165,7 +141,7 @@ for z, lab in zip([z_euler, z_RK45], ["Euler", "RK45"]):
     plt.grid(True)
 
     vmax = max(abs(v))
-    plt.subplot(2,1,2)
+    plt.subplot(3,1,2)
     plt.plot(t, v)
     plt.ylabel("Velocidad, $\dot{u} = z_2$ (m/s)")
     plt.xlabel("Tiempo, $t$ (s)")
@@ -173,7 +149,14 @@ for z, lab in zip([z_euler, z_RK45], ["Euler", "RK45"]):
     plt.xlim([0, tmax])
     plt.grid(True)
 
-plt.subplot(2,1,1)
+    plt.subplot(3,1,3)
+    tt=sp.arange(0,tmax/1.1)
+    plt.plot(tt,inte(tt))
+    plt.xlim(0,tmax)
+    plt.grid(True)
+    plt.ylabel("Registro Sismico ('%'g)")
+
+plt.subplot(3,1,1)
 plt.legend()
 plt.suptitle("Solucion por metodo de Euler")
 
