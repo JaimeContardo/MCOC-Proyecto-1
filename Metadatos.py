@@ -38,6 +38,8 @@ def diccionario_metadatos(ruta):
     metadatos['Duracion']=cantidad/tasa #Esto lo hice segun la cantidad de datos muestreados y la frecuencia
     for i in metadatos:
         print str(i)+' : '+str(metadatos[i])
+    
+    return metadatos
 
 
     
