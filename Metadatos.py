@@ -18,11 +18,11 @@ def Base_Datos_Sismicos(ruta):
     e_Lat_estacion = float(linea [11:18])
     e_Lon_estacion = float(linea[29:])
     linea = linecache.getline(ruta,7)
-    e_Lat_epi = float(linea [11:18])
-    e_Lon_epi = float(linea[29:])
+    e_Lat_epi = float(linea [11:18])#Cambiar el rango de lectura
+    e_Lon_epi = float(linea[29:])#Cambiar el rango de lectura
     linea = linecache.getline(ruta,8)
-    Profundidad = float(linea [11:18])
-    Magnitud = float(linea[29:])
+    Profundidad = float(linea [11:18])#Cambiar el rango de lectura
+    Magnitud = float(linea[29:])#Cambiar el rango de lectura
     linea = linecache.getline(ruta,4)
     nombre = linea[12:16]
     componente = linea[29:32]
