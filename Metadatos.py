@@ -8,8 +8,8 @@ Created on Fri Aug 17 17:36:51 2018
 import linecache
 import scipy as sp
 
-
-def Base_Datos_Sismicos(ruta):
+#Parametros : ruta (es la ruta del archivo), c (un contador para guardar el archvio creado)
+def Base_Datos_Sismicos(ruta,c):
     metadatos = {}
     
     linea = linecache.getline(ruta,1)
@@ -63,7 +63,9 @@ def Base_Datos_Sismicos(ruta):
     
     for i in metadatos:
         print str(i)+' : '+str(metadatos[i])+'\n'
-
+    
+    sp.savez('registro_{}.npz'.format(c),metadatos=metadatos,t=t,a=a)
+    
     return metadatos, t , a
 
 
