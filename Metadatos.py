@@ -6,8 +6,10 @@ Created on Fri Aug 17 17:36:51 2018
 @author: jaimecontardo
 """
 import linecache
+import numpy as np
+import scipy as sp
 
-def diccionario_metadatos(ruta):
+def Base_Datos_Sismicos(ruta):
     metadatos = {}
     linea = linecache.getline(ruta,1)
     fecha = linea[20:30]
@@ -44,7 +46,9 @@ def diccionario_metadatos(ruta):
     metadatos['Duracion']=cantidad/tasa #Esto lo hice segun la cantidad de datos muestreados y la frecuencia
     for i in metadatos:
         print str(i)+' : '+str(metadatos[i])
-    
+    t = sp.arange(0,float(cantidad/tasa),float(1/tasa))
+    # agregar la lectura de vector de aceleraciones
+    # falta imprimir vectores tiempo y aceleracion 
     return metadatos
 
 
