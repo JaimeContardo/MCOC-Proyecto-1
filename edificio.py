@@ -1,21 +1,4 @@
-# Metodos Computacionales en Ingenieria
-# Facultad de Ingenieria y Ciencias Aplicadas - UANDES
-# Segundo Semestre 2018
-# Prof. J. Abell (jaabell@miuandes.cl)
-#
-# Proyecto 1 - Diseno de sistema de disipacion de energia en edificio 
-# 
-# Ejemplo 1  
-# Lenguaje Python 2.7
-#
-# En este programa se resuelve la ecuacion de movimiento del edficio indicado, utilizando un integrador de ecuaciones diferenciales
-# de segundo orden, usando el concepto de espacio de estado y el metodo de Euler, asi como un integrados RungeKutta de 4to orden. Se compara
-# la solucion del metodo de Euler con el integrador RK45 de Scipy, via la interfaz solve_ivp.
-#
-# Se aplica el integrador a resolver la respuesta de un oscilador de 20 GDL sometido a una aceleracion proveniente de un registro sismico 
-# considerando amortiguamiento lineal y un modelo de 
-# amortiguamiento friccional. 
-# =======================================================================================
+
 
 #Importar librerias relevantes
 import scipy as sp
