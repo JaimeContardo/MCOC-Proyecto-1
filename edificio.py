@@ -116,6 +116,7 @@ for z, lab in zip([z_euler, z_RK45], ["Euler", "RK45"]):
     u = z[19,:-1]
     v = z[39,:-1]
     dmax=max(abs(u))
+    print "PGD: "+str(dmax*100)+' cm
     plt.subplot(3,1,1)
     plt.plot(t, u, label=lab)
     plt.ylim([-1.5*dmax, 1.5*dmax])
@@ -124,6 +125,7 @@ for z, lab in zip([z_euler, z_RK45], ["Euler", "RK45"]):
     plt.grid(True)
 
     vmax = max(abs(v))
+    print "PGV: "+str(vmax*100)+' cm/s'
     plt.subplot(3,1,2)
     plt.plot(t, v)
     plt.ylabel("Velocidad, $\dot{u} = z_2$ (m/s)")
