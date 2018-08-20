@@ -9,7 +9,7 @@ def int_arias(ruta):
 	t = sp.arange(0,dt*Nt,dt)
 	Ia = sp.zeros(Nt)
 	a2 = a**2
-	da2 = a2[0:-1]+a2[1:]
+	da2 = (a2[0:-1]+a2[1:])*dt/2
 	Ia[1:]=sp.cumsum(da2)*sp.pi/(2*9.81)
 
 	Ia_inf = Ia.max()
@@ -29,7 +29,12 @@ def int_arias(ruta):
 	plt.plot(t,Ia)
 	plt.show()
 
-
-
-# Latitud_Epi: -19.57 Longitud_Epi: -70.91
-# Profundidad: 38 Magnitud: 8.2
+def PGV(ruta):
+	a = sp.loadtxt(ruta)
+	Nt = a.size
+	dt =1./200
+	t = sp.arange(0,dt*Nt,dt)
+	int_aceleracion = sp.zeros(Nt)
+	da = (a[0:-1]+a[1:])*dt/2
+	int_aceleracion[1:]=sp.cumsum(da)
+	return int_aceleracion
