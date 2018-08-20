@@ -15,19 +15,21 @@ def int_arias(ruta):
 	Ia_inf = Ia.max()
 
 	i_05 = sp.argmin (abs(Ia-(Ia_inf*0.05)))
-	i_05 = sp.argmin (abs(Ia-(Ia_inf*0.95)))
+	i_95 = sp.argmin (abs(Ia-(Ia_inf*0.95)))
 
 	t_05 = t[i_05]
+	t_95=t[i_05]
 	Ia_05 = Ia[i_05]
 
 	t_95 = t[i_95]
 	Ia_95 = Ia[i_95]
-	D = Ia_95-Ia_05 
-	plt.subplot(2,1,1)
-	plt.plot(t,a)
-	plt.subplot(2,1,2)
-	plt.plot(t,Ia)
-	plt.show()
+	D = t_95-t_05 
+	#plt.subplot(2,1,1)
+	#plt.plot(t,a)
+	#plt.subplot(2,1,2)
+	#plt.plot(t,Ia)
+	#plt.show()
+	return D
 
 def PGV(ruta):
 	a = sp.loadtxt(ruta)
