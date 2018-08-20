@@ -7,6 +7,7 @@ Created on Fri Aug 17 17:36:51 2018
 """
 import linecache
 import scipy as sp
+from IA import *
 
 #Parametros : ruta (es la ruta del archivo), c (un contador para guardar el archvio creado)
 def Base_Datos_Sismicos(ruta,c):
@@ -57,9 +58,9 @@ def Base_Datos_Sismicos(ruta,c):
     metadatos['Estacion_Nombre']= nombre
     metadatos['Componente']= componente
     metadatos['PGA']= amax
-    metadatos['PGV']='****'
-    metadatos['PGD']='****'
-    metadatos['Duracion']=cantidad/tasa #Esto lo hice segun la cantidad de datos muestreados y la frecuencia
+    metadatos['PGV']=PGV(ruta)
+    metadatos['PGD']=PGD(ruta)
+    metadatos['Duracion']=int_arias(ruta) #Esto lo hice segun la cantidad de datos muestreados y la frecuencia
     
     for i in metadatos:
         print str(i)+' : '+str(metadatos[i])+'\n'
