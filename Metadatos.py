@@ -1,13 +1,6 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug 17 17:36:51 2018
-
-@author: jaimecontardo
-"""
 import linecache
 import scipy as sp
-from IA import *
+from IA import PGV_PGD, int_arias
 
 #Parametros : ruta (es la ruta del archivo), c (un contador para guardar el archvio creado)
 def Base_Datos_Sismicos(ruta,c):
@@ -58,8 +51,8 @@ def Base_Datos_Sismicos(ruta,c):
     metadatos['Estacion_Nombre']= nombre
     metadatos['Componente']= componente
     metadatos['PGA']= amax
-    metadatos['PGV']=PGV(ruta)
-    metadatos['PGD']=PGD(ruta)
+    metadatos['PGV']=PGV_PGD(ruta)[0]
+    metadatos['PGD']=PGV_PGD(ruta)[1]
     metadatos['Duracion']=int_arias(ruta) #Esto lo hice segun la cantidad de datos muestreados y la frecuencia
     
     for i in metadatos:
@@ -69,9 +62,7 @@ def Base_Datos_Sismicos(ruta,c):
     
     return metadatos, t , a
 
-
+Base_Datos_Sismicos('/home/jose/Documents/registross/20130130-201540-GO03-HNE.txt',01)
 # Para obtener los metadatos, el vector t o el vector a, se debe seguir esta forma:
 # metadatos , t , a = Base_Datos_Sismicos(ruta)
-
-
     
