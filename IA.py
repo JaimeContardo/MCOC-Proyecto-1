@@ -47,5 +47,5 @@ def PGV_PGD(ruta):
 	dv = (V[0:-1]+V[1:])*dt/2
 	pgd = max(dv)
 	pgv_pgd = [pgv,pgd]
-	return 
+	return pgv_pgd
 
