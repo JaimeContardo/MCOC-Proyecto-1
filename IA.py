@@ -31,23 +31,21 @@ def int_arias(ruta):
 	#plt.show()
 	return D
 
-def PGV(ruta):
+def PGV_PGD(ruta):
 	a = sp.loadtxt(ruta)
 	Nt = a.size
 	dt =1./200
 	t = sp.arange(0,dt*Nt,dt)
 	int_aceleracion = sp.zeros(Nt)
 	da = (a[0:-1]+a[1:])*dt/2
-	int_aceleracion[1:]=sp.cumsum(da)
-	return int_aceleracion
-
-def PGD(ruta):
-	V = PGV(ruta)
+	pgv = max(da)
+	V = da
 	Nt = V.size
 	dt =1./200
 	t = sp.arange(0,dt*Nt,dt)
 	int_velocidad = sp.zeros(Nt)
-	da = (V[0:-1]+V[1:])*dt/2
-	int_velocidad[1:]=sp.cumsum(da)
-	return int_velocidad
+	dv = (V[0:-1]+V[1:])*dt/2
+	pgd = max(dv)
+	pgv_pgd = [pgv,pgd]
+	return 
 
