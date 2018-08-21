@@ -1,6 +1,11 @@
+"""
+Created on Mon Aug 20 22:09:30 2018
+
+@author: jose
+"""
 import scipy as sp
 import matplotlib.pyplot as pyplot
-from scipy.integrate import solve_ivp
+#from scipy.integrate import solve_ivp
 def int_arias(ruta):	
 	a = sp.loadtxt(ruta)
 	Nt= a.size
@@ -19,10 +24,10 @@ def int_arias(ruta):
 
 	t_05 = t[i_05]
 	t_95=t[i_05]
-	Ia_05 = Ia[i_05]
+	#Ia_05 = Ia[i_05]
 
 	t_95 = t[i_95]
-	Ia_95 = Ia[i_95]
+	#Ia_95 = Ia[i_95]
 	D = t_95-t_05 
 	#plt.subplot(2,1,1)
 	#plt.plot(t,a)
@@ -33,17 +38,17 @@ def int_arias(ruta):
 
 def PGV_PGD(ruta):
 	a = sp.loadtxt(ruta)
-	Nt = a.size
+	#Nt = a.size
 	dt =1./200
-	t = sp.arange(0,dt*Nt,dt)
-	int_aceleracion = sp.zeros(Nt)
+	#t = sp.arange(0,dt*Nt,dt)
+	#int_aceleracion = sp.zeros(Nt)
 	da = (a[0:-1]+a[1:])*dt/2
 	pgv = max(da)
 	V = da
-	Nt = V.size
+	#Nt = V.size
 	dt =1./200
-	t = sp.arange(0,dt*Nt,dt)
-	int_velocidad = sp.zeros(Nt)
+	#t = sp.arange(0,dt*Nt,dt)
+	#int_velocidad = sp.zeros(Nt)
 	dv = (V[0:-1]+V[1:])*dt/2
 	pgd = max(dv)
 	pgv_pgd = [pgv,pgd]
