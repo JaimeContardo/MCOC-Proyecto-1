@@ -75,8 +75,8 @@ print c
 
 caps= array([150.,250.,500.,800.]) #kN, capacidades disponibles
 c_por_piso=np.zeros(20)
-# c_por_piso=np.array([caps[2],caps[2],caps[2],caps[2],caps[2],caps[1],caps[0],caps[0],caps[0],caps[0],
-#                      caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0],caps[0]])#cantidad de disipadores y que tipo por piso
+# c_por_piso=np.array([0,caps[3],caps[1],caps[2],2*caps[0],caps[3],0,2*caps[0],caps[1],caps[0],
+#                      caps[2],0,2*caps[0],caps[0],2*caps[0],caps[1],caps[1],caps[0],caps[0],caps[0]])#cantidad de disipadores y que tipo por piso
 c_por_piso*=1000 #a N
 
 print "Capacidad total instalada: " + str(np.sum(c_por_piso))+" N"
